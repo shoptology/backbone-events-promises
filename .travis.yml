@@ -1,15 +1,11 @@
 language: node_js
-
 node_js:
-  - 0.8
-
+- 0.8
 notifications:
   email: true
-
-notifications:
-  # hipchat: [api token]@[NYC Dev]
-  # hipchat: travis encrypt api_token@NYC Dev --add notifications.hipchat.rooms
-
+  hipchat:
+    rooms:
+      secure: fTPZEKAd4jqfU48HK+LD4LNDJwDUHoyNZYUjoMB3coJnn5aIPPDKNqcw+QB3+KZovqfGh7ldyB5Jtqn/qVefSpSvA8hJRFt7Qe6AsfnID/+I+Os16YIaUDd4xYAgBSAx0hSZwDAKCOQ9oRq31SzIZuyToN/e/u+caGJlON6tvHc=
 before_install:
-  - npm install -g grunt-cli
-  - npm install
+- npm install -g grunt-cli
+- npm install
