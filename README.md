@@ -9,12 +9,12 @@ This plugin to [backbone.js](http://backbonejs.org/) adds promise functionality 
 #### Dependencies
 
 Promises are implemented by using `$.Deferred` and `$.when`. This can be
-provided via [jQuery](http://jquery.org) or [Zepto](http://zeptojs.com/) [^]. Potentially other sources such as when.js could be used if a shim was provided to apply it's functions to `$.Deferred` and `$.when`.
+provided via [jQuery](http://jquery.org) or [Zepto](http://zeptojs.com/)*. Potentially other sources such as when.js could be used if a shim was provided to apply it's functions to `$.Deferred` and `$.when`.
 
 
 Additionally, it also depends on Underscore's `_.extend()`. Underscore is already a hard dependency of Backbone, so no harm done there.
 
-[^]: requires including Zepto's deferred plugin.
+> *requires including Zepto's deferred plugin.
 
 
 #### Usage
