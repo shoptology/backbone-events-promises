@@ -12,8 +12,9 @@
     // Why?
     // ----
     //
-    // If you have an event listener that needs to make an async call
-    // to complete its function, and you might do something
+    // You fire an event and need to make sure all event listeners
+    // have finished their async calls before you do something destructive
+    // like change the browser location.
     //
     // Dependencies
     // ------------
