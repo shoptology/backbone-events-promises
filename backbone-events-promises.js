@@ -12,7 +12,7 @@
     // Why?
     // ----
     //
-    // You fire an event and need to make sure all event listeners
+    // You trigger an event and need to make sure all event listeners
     // have finished their async calls before you do something destructive
     // like change the browser location.
     //
@@ -96,25 +96,31 @@
 
     // Usage
     // -----
-
+    //
     // To enable on all Backbone objects, use the following code before creating
     // any Backbone objects in your application.
+    //
     //     var objs = ['Model', 'Collection', 'Router', 'View', 'History'];
     //     Backbone.Events.promises(true);
     //     for (var i = 0, l = objs.length; i < l; i++) {
     //         Backbone.Events.promises(true, Backbone[objs[i]].prototype);
     //     }
-
-    // // Backbone.Events.trigger now returns a promise
-    // var promise = Backbone.Events.trigger( "event name", arg1, arg2 );
-
-    // // Each callback assigned to the event *can* return a promise.
-    // // If a promise is returned, it will be added to the list of promises to resolve.
-    // http://api.jquery.com/jQuery.when/
+    //
+    // Backbone.Events.trigger() now returns a promise
+    //
+    //     var promise = Backbone.Events.trigger( "event name", arg1, arg2, ... );
+    ///
+    // Each event listener *can* return a promise. It is optional.
+    // If a promise is returned from the event listener's callback,
+    // it will be added to the list of promises to resolve before
+    // resolving the promise returned by Backbone.Events.trigger.
+    //
+    // If your event listener has multiple async calls to make,
+    // you can use http://api.jquery.com/jQuery.when/ to coordinate them.
 
     // Under The Hood
     // --------------
-
+    //
     // Here we are modifying the `Backbone.Event.trigger()` method and we also
     // have to copy several private functions and aliases from the Backbone source
     // code. See annotated source over here: http://backbonejs.org/docs/backbone.html.
