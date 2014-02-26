@@ -1,5 +1,7 @@
 # backbone-events-promises
 
+[![BuildStatus](https://travis-ci.org/shoptology/backbone-events-promises.png?branch=master)](https://travis-ci.org/shoptology/backbone-events-promises)
+
 
 This plugin to [backbone.js](http://backbonejs.org/) adds promise functionality to `Backbone.Events`, as well as any object that extends `Backbone.Events` - which is pretty much all of them.
 

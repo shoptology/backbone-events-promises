@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/shoptology/backbone-events-promises.git"
+    "url": "https://github.com/shoptology/backbone-events-promises"
   },
   "keywords": [
     "backbone",
