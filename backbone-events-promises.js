@@ -1,40 +1,42 @@
+/*!
+ * backbone-events-promises.js 0.1.1
+ * (c) 2014 Shoptology
+ * backbone-events-promises.js may be freely distributed under the MIT license.
+ */
 (function(Backbone) {
     var init = function(trigger, triggerEvents) {
 
-    // backbone-events-promises
-    // ========================
-    //
-    // This plugin to [backbone.js](http://backbonejs.org/) can add
-    // promise functionality to Backbone.Events (and any Backbone
-    // object which extends Backbone.Events - which is pretty much
-    // all of them).
-    //
-    // Why?
-    // ----
-    //
-    // You trigger an event and need to make sure all event listeners
-    // have finished their async calls before you do something destructive
-    // like change the browser location.
-    //
-    // Dependencies
-    // ------------
-    // It implements promises by using `$.Deferred` and `$.when` either. This can be
-    // provided via [jQuery](http://jquery.org) or [Zepto](http://zeptojs.com/) (requires
-    // including Zepto's deferred plugin). Potentially, other
-    // sources such as when.js could be used if a shim was provided to
-    // apply it's functions to `$.Deferred` and `$.when`.
-    //
-    // It also depends on `_.extend()`. Underscore is already a hard dependency of Backbone,
-    // so no harm done there.
-    //
-    // Backwards Breaking Changes
-    // --------------------------
-    // The only thing that happens by default here is setting
-    // `Backbone.Events.promises()`.
-    //
-    // Backbone.Events.promises(enable, [context], [options]);
-    // --------------------------------------------
-    // Enables the backbone-promises functionality for events.
+        // This plugin to [backbone.js](http://backbonejs.org/) can add
+        // promise functionality to Backbone.Events (and any Backbone
+        // object which extends Backbone.Events - which is pretty much
+        // all of them).
+        //
+        // Why?
+        // ----
+        //
+        // You trigger an event and need to make sure all event listeners
+        // have finished their async calls before you do something destructive
+        // like change the browser location.
+        //
+        // Dependencies
+        // ------------
+        // It implements promises by using `$.Deferred` and `$.when` either. This can be
+        // provided via [jQuery](http://jquery.org) or [Zepto](http://zeptojs.com/) (requires
+        // including Zepto's deferred plugin). Potentially, other
+        // sources such as when.js could be used if a shim was provided to
+        // apply it's functions to `$.Deferred` and `$.when`.
+        //
+        // It also depends on `_.extend()`. Underscore is already a hard dependency of Backbone,
+        // so no harm done there.
+        //
+        // Backwards Breaking Changes
+        // --------------------------
+        // The only thing that happens by default here is setting
+        // `Backbone.Events.promises()`.
+        //
+        // Backbone.Events.promises(enable, [context], [options]);
+        // --------------------------------------------
+        // Enables the backbone-promises functionality for events.
 
         Backbone.Events.promises = function(enable, context, options) {
 
@@ -96,36 +98,37 @@
 
     // Usage
     // -----
-    //
+
     // To enable on all Backbone objects, use the following code before creating
     // any Backbone objects in your application.
-    //
+
     //     var objs = ['Model', 'Collection', 'Router', 'View', 'History'];
     //     Backbone.Events.promises(true);
     //     for (var i = 0, l = objs.length; i < l; i++) {
     //         Backbone.Events.promises(true, Backbone[objs[i]].prototype);
     //     }
-    //
+
     // Backbone.Events.trigger() now returns a promise
-    //
+
     //     var promise = Backbone.Events.trigger( "event name", arg1, arg2, ... );
-    ///
+
     // Each event listener *can* return a promise. It is optional.
     // If a promise is returned from the event listener's callback,
     // it will be added to the list of promises to resolve before
     // resolving the promise returned by Backbone.Events.trigger.
-    //
+
     // If your event listener has multiple async calls to make,
     // you can use http://api.jquery.com/jQuery.when/ to coordinate them.
 
     // Under The Hood
     // --------------
-    //
+
     // Here we are modifying the `Backbone.Event.trigger()` method and we also
     // have to copy several private functions and aliases from the Backbone source
     // code. See annotated source over here: http://backbonejs.org/docs/backbone.html.
     // It should be exactly the same as the original version except it returns
     // a promise.
+
     // The promise object is the result of a `$.when()` call. The arguments to
     // `$.when are callbacks returning the results of each event listener.
     // See [api.jquery.com/jQuery.when/](http://api.jquery.com/jQuery.when/).

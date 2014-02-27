@@ -24,8 +24,8 @@ Additionally, it also depends on Underscore's `_.extend()`. Underscore is alread
 API:
 
     Backbone.Events.promises(enable, [context], [options]);
-Enables the backbone-promises functionality for events.
 
+Enables the backbone-promises functionality for events.
 
 To enable on all Backbone objects, use the following code before creating
 any Backbone objects in your application.

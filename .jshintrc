@@ -1,0 +1,67 @@
+{
+    // Settings
+    "passfail"      : false,   // Stop on first error.
+    "maxerr"        : 50,     // Maximum error before stopping.
+
+
+    // Predefined globals whom JSHint will ignore.
+    "browser"       : true,  // Standard browser globals e.g. `window`, `document`.
+    "jquery"        : true,
+    "node"          : true,
+
+    // Custom globals.
+    "predef"        : [
+        "define",
+        "require"
+    ],
+
+    // Development.
+    "debug"         : false,  // Allow debugger statements e.g. browser breakpoints.
+    "devel"         : false,  // Allow developments statements e.g. `console.log();`.
+
+
+    // EcmaScript 5.
+    "es3"           : true,   // Allow EcmaScript 3 syntax. older browsers
+    "globalstrict"  : false,  // Allow global "use strict" (also enables 'strict').
+    "strict"        : false,  // Require `use strict` pragma  in every file.
+
+
+    // The Good Parts.
+    "asi"           : false,   // Tolerate Automatic Semicolon Insertion (no semicolons).
+    "bitwise"       : true,   // Prohibit bitwise operators (&, |, ^, etc.).
+    "boss"          : true,   // Tolerate assignments inside if, for & while. Usually conditions & loops are for comparison, not assignments.
+    "camelcase"     : false,  // This option allows you to force all variable names to use either camelCase or UPPER_CASE with underscores.
+    "curly"         : true,   // Require {} for every new block or scope.
+    "eqeqeq"        : true,   // Require triple equals i.e. `===`.
+    "eqnull"        : true,   // Tolerate use of `== null`.
+    "evil"          : false,  // Tolerate use of `eval`.
+    "expr"          : false,  // Tolerate `ExpressionStatement` as Programs.
+    "forin"         : false,  // Tolerate `for in` loops without `hasOwnPrototype`.
+    "immed"         : true,   // Require immediate invocations to be wrapped in parens e.g. `( function(){}() );`
+    "indent"        : 4,      // This option enforces specific tab width for your code.
+    "latedef"       : true,   // Prohibit variable use before definition.
+    "laxbreak"      : false,  // Tolerate unsafe line breaks e.g. `return [\n] x` without semicolons.
+    "loopfunc"      : false,  // Allow functions to be defined within loops.
+    "noarg"         : true,   // Prohibit use of `arguments.caller` and `arguments.callee`.
+    "regexdash"     : true,   // Tolerate unescaped last dash i.e. `[-...]`.
+    "regexp"        : true,   // Prohibit `.` and `[^...]` in regular expressions.
+    "scripturl"     : false,  // Tolerate script-targeted URLs.
+    "shadow"        : false,  // Allows re-define variables later in code e.g. `var x=1; x=2;`.
+    "smarttabs"     : true,   // This option suppresses warnings about mixed tabs and spaces .
+    "supernew"      : false,  // Tolerate `new function () { ... };` and `new Object;`.
+    "undef"         : false,  // Require all non-global variables be declared before they are used.
+    "unused"        : false,   // This option warns when you define and never use your variables.
+
+
+    // Personal styling prefrences.
+    "newcap"        : true,   // Require capitalization of all constructor functions e.g. `new F()`.
+    "noempty"       : true,   // Prohipit use of empty blocks.
+    "nomen"         : false,  // Prohibit use of initial or trailing underbars in names.
+    "nonew"         : true,   // Prohibit use of constructors for side-effects.
+    "onevar"        : false,  // Allow only one `var` statement per function.
+    "plusplus"      : false,  // Prohibit use of `++` & `--`.
+    "quotmark"      : false,  // This option enforces the consistency of quotation marks used throughout your code.
+    "sub"           : false,  // Tolerate all forms of subscript notation besides dot notation e.g. `dict['key']` instead of `dict.key`.
+    "trailing"      : true,   // Prohibit trailing whitespaces.
+    "white"         : false   // Check against strict whitespace and indentation rules.
+}

@@ -1,7 +1,7 @@
 {
   "name": "backbone-events-promises",
   "description": "Adds promise functionality to Backbone.Events.trigger()",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "backbone-events-promises.js",
   "scripts": {
     "test": "grunt"
@@ -24,15 +24,18 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "mocha":       "~1.17.1",
-    "chai":        "~1.9.0",
-    "sinon":       "~1.8.2",
-    "grunt":       "~0.4.2",
-    "grunt-mocha": "~0.4.10"
+    "mocha": "~1.17.1",
+    "chai": "~1.9.0",
+    "sinon": "~1.8.2",
+    "grunt": "~0.4.2",
+    "grunt-mocha": "~0.4.10",
+    "grunt-contrib-uglify": "~0.3.2",
+    "grunt-docco-multi": "0.0.2",
+    "grunt-gh-pages": "~0.9.1",
+    "jquery": "~2.1.0"
   },
   "dependencies": {
-    "backbone":   "~1.1.0",
-    "underscore": "~1.5.2",
-    "jquery":     "~2.1.0"
+    "backbone": "~1.1.0",
+    "underscore": ">=1.5.2"
   }
 }

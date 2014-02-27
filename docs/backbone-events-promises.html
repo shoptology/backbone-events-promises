@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>backbone-events-promises.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>backbone-events-promises.js</h1>
+        
+
+        
+      </div>
+
+      
+        
+        
+        
+          <div class='highlight'><pre><span class="hljs-comment">/*!
+ * backbone-events-promises.js 0.1.1
+ * (c) 2014 Shoptology
+ * backbone-events-promises.js may be freely distributed under the MIT license.
+ */</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(Backbone)</span> {</span>
+    <span class="hljs-keyword">var</span> init = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(trigger, triggerEvents)</span> {</span></pre></div>
+        
+      
+        
+        <p>This plugin to <a href="http://backbonejs.org/">backbone.js</a> can add
+promise functionality to Backbone.Events (and any Backbone
+object which extends Backbone.Events - which is pretty much
+all of them).</p>
+<h2 id="why-">Why?</h2>
+
+        
+      
+        
+        <p>You trigger an event and need to make sure all event listeners
+have finished their async calls before you do something destructive
+like change the browser location.</p>
+<h2 id="dependencies">Dependencies</h2>
+
+        
+      
+        
+        <p>It implements promises by using <code>$.Deferred</code> and <code>$.when</code> either. This can be
+provided via <a href="http://jquery.org">jQuery</a> or <a href="http://zeptojs.com/">Zepto</a> (requires
+including Zepto’s deferred plugin). Potentially, other
+sources such as when.js could be used if a shim was provided to
+apply it’s functions to <code>$.Deferred</code> and <code>$.when</code>.</p>
+<p>It also depends on <code>_.extend()</code>. Underscore is already a hard dependency of Backbone,
+so no harm done there.</p>
+<h2 id="backwards-breaking-changes">Backwards Breaking Changes</h2>
+
+        
+      
+        
+        <p>The only thing that happens by default here is setting
+<code>Backbone.Events.promises()</code>.</p>
+<h2 id="backbone-events-promises-enable-context-options-">Backbone.Events.promises(enable, [context], [options]);</h2>
+
+        
+      
+        
+        <p>Enables the backbone-promises functionality for events.</p>
+
+        
+          <div class='highlight'><pre>
+        Backbone.Events.promises = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(enable, context, options)</span> {</span></pre></div>
+        
+      
+        
+        <p>The biggest change that happens after enabling backbone-promises
+is that <code>Backbone.Events.trigger()</code> will return a promise. This means if
+you are chaining a method after calling <code>trigger()</code> in your code
+(ex. <code>.trigger(event).somethingElse()</code>), it will cause a fatal error and break.
+However, backbone-promises can be configured to use a different method name
+than <code>.trigger()</code> if you can think of a better name that won’t cause
+conflicts in your application.</p>
+
+        
+          <div class='highlight'><pre>
+            <span class="hljs-keyword">var</span> method;
+            <span class="hljs-keyword">if</span> (enable === <span class="hljs-literal">undefined</span>) {
+                enable = <span class="hljs-literal">true</span>;
+            }
+            options = options || {};
+            options = _.extend({
+                method: <span class="hljs-string">"trigger"</span>
+            }, options);
+            method = options.method;</pre></div>
+        
+      
+        
+        <p>You can pass a context in the second parameter which will
+apply the backbone-promises functionality to that object.
+By default, the context is <code>Backbone.Events</code>.</p>
+
+        
+          <div class='highlight'><pre>
+            <span class="hljs-keyword">if</span> (!context) {
+                context = Backbone.Events;
+            }</pre></div>
+        
+      
+        
+        <p>Additionally, the original functionality can
+be restored by using <code>Backbone.Events.promises(false, [context])</code>.
+backbone-promises also reserves use of <code>context._promises</code> to store configuration data.
+Currently, it is used to store the original version of the trigger function.</p>
+
+        
+          <div class='highlight'><pre>
+            <span class="hljs-keyword">if</span> (!enable) {
+                <span class="hljs-keyword">if</span> (!context._promises) {
+                    <span class="hljs-keyword">return</span>;
+                }
+                <span class="hljs-keyword">if</span> (!context._promises.original) {
+                    <span class="hljs-keyword">return</span>;
+                }
+                method = context._promises.method;
+                context[method] = context._promises.original;
+                <span class="hljs-keyword">delete</span> context._promises;
+                <span class="hljs-keyword">return</span> context;
+            }
+
+            <span class="hljs-keyword">if</span> (enable) {
+                <span class="hljs-keyword">if</span> (context._promises) {
+                    <span class="hljs-keyword">return</span>;
+                }
+                context._promises = _.extend(options, {
+                    original: context[method]
+                });
+                context[method] = trigger;
+            }
+        };
+    },</pre></div>
+        
+      
+        
+        <h2 id="usage">Usage</h2>
+
+        
+      
+        
+        
+        
+      
+        
+        <p>To enable on all Backbone objects, use the following code before creating
+any Backbone objects in your application.</p>
+
+        
+      
+        
+        <pre><code><span class="hljs-keyword">var</span> objs = [<span class="hljs-string">'Model'</span>, <span class="hljs-string">'Collection'</span>, <span class="hljs-string">'Router'</span>, <span class="hljs-string">'View'</span>, <span class="hljs-string">'History'</span>];
+Backbone.Events.promises(<span class="hljs-literal">true</span>);
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = objs.length; i &lt; l; i++) {
+    Backbone.Events.promises(<span class="hljs-literal">true</span>, Backbone[objs[i]].prototype);
+}
+</code></pre>
+        
+      
+        
+        <p>Backbone.Events.trigger() now returns a promise</p>
+
+        
+      
+        
+        <pre><code><span class="hljs-keyword">var</span> promise = Backbone.Events.trigger( <span class="hljs-string">"event name"</span>, arg1, arg2, ... );
+</code></pre>
+        
+      
+        
+        <p>Each event listener <em>can</em> return a promise. It is optional.
+If a promise is returned from the event listener’s callback,
+it will be added to the list of promises to resolve before
+resolving the promise returned by Backbone.Events.trigger.</p>
+
+        
+      
+        
+        <p>If your event listener has multiple async calls to make,
+you can use <a href="http://api.jquery.com/jQuery.when/">http://api.jquery.com/jQuery.when/</a> to coordinate them.</p>
+
+        
+      
+        
+        <h2 id="under-the-hood">Under The Hood</h2>
+
+        
+      
+        
+        
+        
+      
+        
+        <p>Here we are modifying the <code>Backbone.Event.trigger()</code> method and we also
+have to copy several private functions and aliases from the Backbone source
+code. See annotated source over here: <a href="http://backbonejs.org/docs/backbone.html">http://backbonejs.org/docs/backbone.html</a>.
+It should be exactly the same as the original version except it returns
+a promise.</p>
+
+        
+      
+        
+        <p>The promise object is the result of a <code>$.when()</code> call. The arguments to
+`$.when are callbacks returning the results of each event listener.
+See <a href="http://api.jquery.com/jQuery.when/">api.jquery.com/jQuery.when/</a>.</p>
+
+        
+          <div class='highlight'><pre>
+    array = [],
+    push = array.push,
+    slice = array.slice,
+    splice = array.splice,
+    eventSplitter = <span class="hljs-regexp">/\s+/</span>,
+    eventsApi = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj, action, name, rest)</span> {</span>
+        <span class="hljs-keyword">if</span> (!name) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        }
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> name === <span class="hljs-string">'object'</span>) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> name) {
+                obj[action].apply(obj, [key, name[key]].concat(rest));
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+        <span class="hljs-keyword">if</span> (eventSplitter.test(name)) {
+            <span class="hljs-keyword">var</span> names = name.split(eventSplitter);
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = names.length; i &lt; l; i++) {
+                obj[action].apply(obj, [names[i]].concat(rest));
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    },
+    trigger = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span> {</span>
+        <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._events) {
+            <span class="hljs-keyword">return</span> $.when();
+        }
+        <span class="hljs-keyword">var</span> args = slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">if</span> (!eventsApi(<span class="hljs-keyword">this</span>, <span class="hljs-string">'trigger'</span>, name, args)) {
+            <span class="hljs-keyword">return</span> $.when();
+        }
+        <span class="hljs-keyword">var</span> events = <span class="hljs-keyword">this</span>._events[name];
+        <span class="hljs-keyword">var</span> allEvents = <span class="hljs-keyword">this</span>._events.all;
+        <span class="hljs-keyword">if</span> (events) {
+            <span class="hljs-keyword">return</span> triggerEvents(events, args);
+        }
+        <span class="hljs-keyword">if</span> (allEvents) {
+            <span class="hljs-keyword">return</span> triggerEvents(allEvents, <span class="hljs-built_in">arguments</span>);
+        }
+        <span class="hljs-keyword">return</span> $.when();
+    },</pre></div>
+        
+      
+        
+        <p>We attempted to follow Backbone’s lead here with
+optimizing the manner to call event listeners. The idea is that
+javascript’s <code>call()</code> method is faster
+than <code>apply</code> and most events are called with only a few arguments.</p>
+<p>This is where we differ from Backbone and create an
+array of callback which is sent to <code>$.when()</code>.</p>
+
+        
+          <div class='highlight'><pre>
+    triggerEvents = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(events, args)</span> {</span>
+        <span class="hljs-keyword">var</span> ev, i = -<span class="hljs-number">1</span>, l = events.length, a1 = args[<span class="hljs-number">0</span>], a2 = args[<span class="hljs-number">1</span>], a3 = args[<span class="hljs-number">2</span>], cbs = [];
+        <span class="hljs-keyword">switch</span> (args.length) {
+        <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">while</span> (++i &lt; l) {
+                cbs.push((ev = events[i]).callback.call(ev.ctx));
+            }
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">while</span> (++i &lt; l) {
+                cbs.push((ev = events[i]).callback.call(ev.ctx, a1));
+            }
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
+            <span class="hljs-keyword">while</span> (++i &lt; l) {
+                cbs.push((ev = events[i]).callback.call(ev.ctx, a1, a2));
+            }
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:
+            <span class="hljs-keyword">while</span> (++i &lt; l) {
+                cbs.push((ev = events[i]).callback.call(ev.ctx, a1, a2, a3));
+            }
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">default</span>:
+            <span class="hljs-keyword">while</span> (++i &lt; l) {
+                cbs.push((ev = events[i]).callback.apply(ev.ctx, args));
+            }
+            <span class="hljs-keyword">break</span>;
+        }
+        <span class="hljs-keyword">return</span> $.when.apply($, cbs);
+    };
+
+    init(trigger, triggerEvents);
+
+})(Backbone);</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,16 +1,16 @@
 {
   "name": "backbone-events-promises",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "backbone-events-promises.js",
   "devDependencies": {
     "mocha": "~1.17.1",
     "chai": "~1.9.0",
-    "sinon": "~1.8.2"
+    "sinon": "~1.8.2",
+    "jquery": "~2.1.0"
   },
   "dependencies": {
     "backbone": "~1.1.0",
-    "underscore": "~1.5.2",
-    "jquery": "~2.1.0"
+    "underscore": ">=1.5.0"
   },
   "homepage": "https://github.com/shoptology/backbone-events-promises",
   "authors": [
