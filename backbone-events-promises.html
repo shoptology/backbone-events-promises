@@ -24,12 +24,15 @@
         
         
           <div class='highlight'><pre><span class="hljs-comment">/*!
- * backbone-events-promises.js 0.1.1
+ * backbone-events-promises.js 0.2.0
  * (c) 2014 Shoptology
  * backbone-events-promises.js may be freely distributed under the MIT license.
- */</span>
-(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(Backbone)</span> {</span>
-    <span class="hljs-keyword">var</span> init = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(trigger, triggerEvents)</span> {</span></pre></div>
+ *
+ * Changelog:
+ * 0.2.0 - AMD and CommonJS module support
+ * 0.1.1 - README update
+ * 0.1.0 - initial public release
+ */</span></pre></div>
         
       
         
@@ -57,7 +60,50 @@ sources such as when.js could be used if a shim was provided to
 apply it’s functions to <code>$.Deferred</code> and <code>$.when</code>.</p>
 <p>It also depends on <code>_.extend()</code>. Underscore is already a hard dependency of Backbone,
 so no harm done there.</p>
-<h2 id="backwards-breaking-changes">Backwards Breaking Changes</h2>
+<p>We setup support for global Backbone, AMD/RequireJS, and CommonJS/Browserify.
+However, note that this module does not return anything. It attaches a
+<code>promises()</code> function to Backbone.Events which is used to enable or disable the functionality.</p>
+<p>If AMD or CommonJS modules are available, it will require ‘backbone’, ‘underscore’, and ‘jquery’
+dependencies. It should be possible to replace one of those requirements by using a
+map or transform feature from RequireJS or Browserify. Otherwise it will use
+Backbone, _, and Backbone.$ from the global scope.</p>
+
+        
+          <div class='highlight'><pre>
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(root, factory)</span> {</span>
+<span class="hljs-pi">    'use strict'</span>;
+    <span class="hljs-keyword">var</span> Backbone = root.Backbone;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define === <span class="hljs-string">'function'</span> &amp;&amp; define.amd) {</pre></div>
+        
+      
+        
+        <p>AMD. Register as an anonymous module.</p>
+
+        
+          <div class='highlight'><pre>        define([<span class="hljs-string">'exports'</span>, <span class="hljs-string">'backbone'</span>, <span class="hljs-string">'underscore'</span>, <span class="hljs-string">'jquery'</span>], factory);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> exports === <span class="hljs-string">'object'</span>) {</pre></div>
+        
+      
+        
+        <p>CommonJS</p>
+
+        
+          <div class='highlight'><pre>        factory(exports, <span class="hljs-built_in">require</span>(<span class="hljs-string">'backbone'</span>, <span class="hljs-string">'underscore'</span>, <span class="hljs-string">'jquery'</span>));
+    } <span class="hljs-keyword">else</span> {</pre></div>
+        
+      
+        
+        <p>Browser globals</p>
+
+        
+          <div class='highlight'><pre>        factory((root.commonJsStrict = {}), Backbone, root._, Backbone.$);
+    }
+}(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(exports, Backbone, _, $)</span> {</span>
+    <span class="hljs-keyword">var</span> init = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(trigger, triggerEvents)</span> {</span></pre></div>
+        
+      
+        
+        <h2 id="backwards-breaking-changes">Backwards Breaking Changes</h2>
 
         
       
@@ -305,7 +351,7 @@ array of callback which is sent to <code>$.when()</code>.</p>
 
     init(trigger, triggerEvents);
 
-})(Backbone);</pre></div>
+}));</pre></div>
         
       
       <div class="fleur">h</div>
