@@ -1,34 +1,62 @@
 /*!
- * backbone-events-promises.js 0.1.1
+ * backbone-events-promises.js 0.2.0
  * (c) 2014 Shoptology
  * backbone-events-promises.js may be freely distributed under the MIT license.
+ *
+ * Changelog:
+ * 0.2.0 - AMD and CommonJS module support
+ * 0.1.1 - README update
+ * 0.1.0 - initial public release
  */
-(function(Backbone) {
+
+// This plugin to [backbone.js](http://backbonejs.org/) can add
+// promise functionality to Backbone.Events (and any Backbone
+// object which extends Backbone.Events - which is pretty much
+// all of them).
+//
+// Why?
+// ----
+//
+// You trigger an event and need to make sure all event listeners
+// have finished their async calls before you do something destructive
+// like change the browser location.
+//
+// Dependencies
+// ------------
+// It implements promises by using `$.Deferred` and `$.when` either. This can be
+// provided via [jQuery](http://jquery.org) or [Zepto](http://zeptojs.com/) (requires
+// including Zepto's deferred plugin). Potentially, other
+// sources such as when.js could be used if a shim was provided to
+// apply it's functions to `$.Deferred` and `$.when`.
+//
+// It also depends on `_.extend()`. Underscore is already a hard dependency of Backbone,
+// so no harm done there.
+//
+// We setup support for global Backbone, AMD/RequireJS, and CommonJS/Browserify.
+// However, note that this module does not return anything. It attaches a
+// `promises()` function to Backbone.Events which is used to enable or disable the functionality.
+//
+// If AMD or CommonJS modules are available, it will require 'backbone', 'underscore', and 'jquery'
+// dependencies. It should be possible to replace one of those requirements by using a
+// map or transform feature from RequireJS or Browserify. Otherwise it will use
+// Backbone, _, and Backbone.$ from the global scope.
+
+(function (root, factory) {
+    'use strict';
+    var Backbone = root.Backbone;
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['exports', 'backbone', 'underscore', 'jquery'], factory);
+    } else if (typeof exports === 'object') {
+        // CommonJS
+        factory(exports, require('backbone', 'underscore', 'jquery'));
+    } else {
+        // Browser globals
+        factory((root.commonJsStrict = {}), Backbone, root._, Backbone.$);
+    }
+}(this, function (exports, Backbone, _, $) {
     var init = function(trigger, triggerEvents) {
 
-        // This plugin to [backbone.js](http://backbonejs.org/) can add
-        // promise functionality to Backbone.Events (and any Backbone
-        // object which extends Backbone.Events - which is pretty much
-        // all of them).
-        //
-        // Why?
-        // ----
-        //
-        // You trigger an event and need to make sure all event listeners
-        // have finished their async calls before you do something destructive
-        // like change the browser location.
-        //
-        // Dependencies
-        // ------------
-        // It implements promises by using `$.Deferred` and `$.when` either. This can be
-        // provided via [jQuery](http://jquery.org) or [Zepto](http://zeptojs.com/) (requires
-        // including Zepto's deferred plugin). Potentially, other
-        // sources such as when.js could be used if a shim was provided to
-        // apply it's functions to `$.Deferred` and `$.when`.
-        //
-        // It also depends on `_.extend()`. Underscore is already a hard dependency of Backbone,
-        // so no harm done there.
-        //
         // Backwards Breaking Changes
         // --------------------------
         // The only thing that happens by default here is setting
@@ -218,4 +246,4 @@
 
     init(trigger, triggerEvents);
 
-})(Backbone);
+}));

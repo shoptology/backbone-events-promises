@@ -1,7 +1,7 @@
 {
   "name": "backbone-events-promises",
   "description": "Adds promise functionality to Backbone.Events.trigger()",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "backbone-events-promises.js",
   "scripts": {
     "test": "grunt"
